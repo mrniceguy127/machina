@@ -1,0 +1,30 @@
+{
+  "name": "machina",
+  "version": "0.0.1",
+  "description": "A general purpose Discord bot.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrniceguy127/machina.git"
+  },
+  "keywords": [
+    "discord"
+  ],
+  "author": "Matthew Kleiner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrniceguy127/machina/issues"
+  },
+  "homepage": "https://github.com/mrniceguy127/machina#readme",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "discord.js-commando": "^0.10.0",
+    "dotenv": "^8.1.0",
+    "getopts": "^2.2.5",
+    "string-argv": "^0.3.1"
+  }
+}
