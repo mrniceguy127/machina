@@ -4,15 +4,15 @@ module.exports = [
   [
     "dev",
     "Dev"
-  ]
+  ],
   // [
   //   "fun",
   //   "Fun"
   // ],
-  // [
-  //   "music",
-  //   "Music"
-  // ],
+  [
+    "music",
+    "Music"
+  ]
   // [
   //   "anime",
   //   "Anime"

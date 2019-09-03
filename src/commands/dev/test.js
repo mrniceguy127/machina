@@ -42,14 +42,6 @@ module.exports = class TestCommand extends MachinaLib.Command {
     return usage;
   }
 
-  async sendHelp(msg) {
-    msg.say("Name: " + this.name + "\n" +
-             "Details: " + this.details + "\n" +
-             "Guild Only: " + this.guildOnly + "\n" +
-             "Usage: " + this.getUsage() + '\n' +
-             "Examples:\n\t" + this.examples.join("\n\t"));
-  }
-
   async execute(msg, opts) {
     msg.say("foo: " + opts.foo + "----------" + typeof opts.foo + '\n' +
             "bar: " + opts.bar + "----------" + typeof opts.bar + '\n' +
