@@ -1,4 +1,4 @@
-![](readme-assets/README-94c41b21.png)
+![](readme-assets/banner.png)
 
 # Intro
 A general purpose Discord bot that uses a C-style command syntax.
