@@ -11,7 +11,10 @@ async function initPromiseCallback(res, rej) {
   let clientOpts = {
     owner: process.env.OWNER,
     commandPrefix: process.env.CMD_PREFIX,
-    unknownCommandResponse: false
+    unknownCommandResponse: false,
+    globals: {
+      queues: {}
+    }
   };
 
   let client = new MachinaClient(clientOpts);
