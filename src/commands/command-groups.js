@@ -5,6 +5,10 @@ module.exports = [
     "dev",
     "Dev"
   ],
+  [
+    "execute",
+    "Execute"
+  ],
   // [
   //   "fun",
   //   "Fun"
