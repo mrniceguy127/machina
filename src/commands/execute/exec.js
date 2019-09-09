@@ -61,6 +61,7 @@ module.exports = class TestCommand extends MachinaLib.Command {
 
   async execute(msg, opts) {
     const cmdOpts = opts._;
+    const user = msg.author;
 
 
     if (cmdOpts.length) {
@@ -82,6 +83,7 @@ module.exports = class TestCommand extends MachinaLib.Command {
             msg.say('Program executed successfully');
           })
           .catch(() => {
+            this.clearThrottle(user.id);
             msg.say('Execution failed. Check your command input. As a last resort, contact the bot host.');
           });
         }
