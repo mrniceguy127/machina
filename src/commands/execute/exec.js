@@ -8,8 +8,6 @@ const path = require('path');
 const progsPath = path.resolve('./exec/progs.json');
 let progs = {};
 
-console.log(fs.existsSync(progsPath), progsPath);
-
 if (fs.existsSync(progsPath)) {
   progs = require(progsPath);
 }
