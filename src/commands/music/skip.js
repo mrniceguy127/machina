@@ -1,7 +1,6 @@
-const MachinaLib = require('../../../lib');
-const Command = MachinaLib.Command;
+const VCMusicCommand = require('./classes/vc-music-command');
 
-module.exports = class SkipCommand extends MachinaLib.Command {
+module.exports = class SkipCommand extends VCMusicCommand {
   constructor(client) {
     super(client, {
       name: 'skip',
@@ -15,7 +14,8 @@ module.exports = class SkipCommand extends MachinaLib.Command {
       examples: [
         process.env.CMD_PREFIX + 'skip --help',
         process.env.CMD_PREFIX + 'skip',
-      ]
+      ],
+      forceSameVC: true
     });
   }
 
@@ -27,22 +27,14 @@ module.exports = class SkipCommand extends MachinaLib.Command {
 
 
 
-  async execute(msg, opts) {
-    const memVC = msg.member.voiceChannel;
-    const cliVC = msg.guild.voiceConnection.channel;
+  async conditionalExecute(msg, opts) {
+    const guild = msg.guild;
+    const cliVConn = guild.voiceConnection;
+    const dispatcher = cliVConn.dispatcher;
+    const queue = this.client.globals.queues[guild.id];
 
-    if (memVC && cliVC) {
-      const memVCID = memVC.id;
-      const cliVCID = cliVC.id;
-
-      if (memVCID === cliVCID) {
-        cliVC.connection.dispatcher.end();
-        msg.say("Skipped song.");
-      } else {
-        msg.say("We must be in the same voice channel to do that.");
-      }
-    } else {
-      msg.say("One of us is not in a voice channel.");
-    }
+    queue.disableLoopOne();
+    dispatcher.end();
+    msg.say("Skipped song.");
   }
 }

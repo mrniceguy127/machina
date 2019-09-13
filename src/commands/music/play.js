@@ -1,6 +1,5 @@
-const MachinaLib = require('../../../lib');
-const Command = MachinaLib.Command;
-const LimitQueue = MachinaLib.dataStructs.LimitQueue;
+const VCMusicCommand = require('./classes/vc-music-command');
+const MusicQueue = require('./classes/music-queue');
 const ytdl = require('ytdl-core');
 
 const ytdlOptions = { filter: 'audioonly' };
@@ -10,7 +9,7 @@ const streamOptions = {
 };
 const limQSize = 256;
 
-module.exports = class PlayCommand extends MachinaLib.Command {
+module.exports = class PlayCommand extends VCMusicCommand {
   constructor(client) {
     super(client, {
       name: 'play',
@@ -22,10 +21,10 @@ module.exports = class PlayCommand extends MachinaLib.Command {
       guildOnly: true,
       opts: {
         string: ["url"],
-        boolean: ["list"],
+        boolean: ["playlist"],
         alias: {
           url: 'u',
-          list: 'l'
+          list: 'p'
         },
         default: {
           url: '',
@@ -37,15 +36,16 @@ module.exports = class PlayCommand extends MachinaLib.Command {
         process.env.CMD_PREFIX + 'play https://www.youtube.com/...',
         process.env.CMD_PREFIX + 'play -u https://www.youtube.com/...',
         process.env.CMD_PREFIX + 'play https://www.youtube.com/playlist... -l',
-        process.env.CMD_PREFIX + 'play -lu https://www.youtube.com/playlist...',
-        process.env.CMD_PREFIX + 'play -l --url https://www.youtube.com/playlist...'
-      ]
+        process.env.CMD_PREFIX + 'play -pu https://www.youtube.com/playlist...',
+        process.env.CMD_PREFIX + 'play -p --url https://www.youtube.com/playlist...',
+      ],
+      forceMemberVC: true
     });
   }
 
   getUsage(opts) {
     let usage = super.getUsage() + " ";
-    usage += "[URL] [-u|--url=string] [-l|--list]";
+    usage += "[URL] [-u|--url=string] [-p|--playlist]";
 
     return usage;
   }
@@ -55,12 +55,16 @@ module.exports = class PlayCommand extends MachinaLib.Command {
     let vc = guild.voiceConnection.channel;
     let queue = this.client.globals.queues[guild.id];
     if (!vc.connection.dispatcher) { // Play song *only* if it is at the front of the queue and nothing else is playing.
-      let songURL = queue.dequeue();
+      let songURL = queue.getHead();
 
       if (songURL) {
         let dispatcher = vc.connection.playStream(ytdl(songURL, ytdlOptions), streamOptions);
 
         dispatcher.once('end', () => {
+          if (!queue.isLoopingOne()) {
+            queue.dequeue()
+          }
+
           this.playSongs(msg, opts);
         });
       } else {
@@ -69,41 +73,40 @@ module.exports = class PlayCommand extends MachinaLib.Command {
     }
   }
 
-  async execute(msg, opts) {
+  async conditionalExecute(msg, opts) {
     const url = opts._[0] || opts.url;
-    const isList = opts.list; // Is YT playlist?
+    const isPlaylist = opts.playlist; // Is YT playlist?
     const guild = msg.guild;
 
-    if (isList) {
+    if (isPlaylist) {
       msg.say("Playlist feature not available yet. Stay tuned!");
     } else {
       if (ytdl.validateURL(url)) {
         const vc = msg.member.voiceChannel;
-        if (vc) { // User in voice channel?
 
-          // Create queue if one does not already exist
-          let queues = this.client.globals.queues;
+        // Create queue if one does not already exist
+        let queues = this.client.globals.queues;
 
-          if (!queues[guild.id]) queues[guild.id] = new LimitQueue(limQSize);
+        if (!queues[guild.id]) {
+          let newQueue = new MusicQueue(limQSize);
+          queues[guild.id] = newQueue;
+        }
 
-          // Append song to queue.
-          let queue = queues[guild.id];
-          if (!queue.isFull()) {
-            queues[guild.id].enqueue(url);
+        // Append song to queue.
+        let queue = queues[guild.id];
+        if (!queue.isFull()) {
+          queue.enqueue(url);
 
-            msg.say("Added song to queue (" + queue.getLength() + "/" + queue.getLimit() + ")");
+          msg.say("Added song to queue (" + queue.getLength() + "/" + queue.getLimit() + ")");
 
-            vc.join().then(() => {
-              this.playSongs(msg, opts);
-            })
-            .catch((err) => {
-              msg.say("Could not connect to voice channel.");
-            });
-          } else {
-            msg.say("Queue full (256)");
-          }
+          vc.join().then(() => {
+            this.playSongs(msg, opts);
+          })
+          .catch((err) => {
+            msg.say("Could not connect to voice channel.");
+          });
         } else {
-          msg.say("You must be in a voice channel to use that command.");
+          msg.say("Queue full (256)");
         }
       } else {
         msg.say("Invalid URL");
