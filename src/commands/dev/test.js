@@ -46,6 +46,6 @@ module.exports = class TestCommand extends MachinaLib.Command {
   async execute(msg, opts) {
     msg.say("foo: " + opts.foo + "----------" + typeof opts.foo + '\n' +
             "bar: " + opts.bar + "----------" + typeof opts.bar + '\n' +
-            "hoge: " + opts.hoge + "----------" + typeof opts.hoge);
+            "hoge: " + opts.hoge + "----------" + typeof opts.hoge + '\n');
   }
 }

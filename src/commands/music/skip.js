@@ -10,12 +10,13 @@ module.exports = class SkipCommand extends VCMusicCommand {
       group: 'music',
       memberName: 'skip',
       description: 'Skip song command.',
-      details: 'Skip song command. Usable when in a voice channel and a song is playing.',
+      details: 'Skip song command. Usable when in a voice channel and a song is playing. Can skip multiple songs at once.',
       guildOnly: true,
       opts: {},
       examples: [
         process.env.CMD_PREFIX + 'skip --help',
-        process.env.CMD_PREFIX + 'skip'
+        process.env.CMD_PREFIX + 'skip',
+        process.env.CMD_PREFIX + 'skip 3'
       ],
       forceSameVC: true
     });
