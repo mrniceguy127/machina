@@ -69,6 +69,7 @@ module.exports = class PlayCommand extends VCMusicCommand {
         });
       } else {
         vc.leave();
+        delete this.client.globals.queues[guild.id];
       }
     }
   }
@@ -96,8 +97,13 @@ module.exports = class PlayCommand extends VCMusicCommand {
         let queue = queues[guild.id];
         if (!queue.isFull()) {
           queue.enqueue(url);
+          const queueLength = queue.getLength();
 
-          msg.say("Added song to queue (" + queue.getLength() + "/" + queue.getLimit() + ")");
+          if (queueLength === 1) {
+            msg.say("Now playing");
+          } else {
+            msg.say("Added song to queue (" + (queueLength - 1) + "/" + queue.getLimit() + ")");
+          }
 
           vc.join().then(() => {
             this.playSongs(msg, opts);

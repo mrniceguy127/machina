@@ -1,3 +1,5 @@
+'use-strict';
+
 const VCMusicCommand = require('./classes/vc-music-command');
 
 module.exports = class SkipCommand extends VCMusicCommand {
@@ -13,7 +15,7 @@ module.exports = class SkipCommand extends VCMusicCommand {
       opts: {},
       examples: [
         process.env.CMD_PREFIX + 'skip --help',
-        process.env.CMD_PREFIX + 'skip',
+        process.env.CMD_PREFIX + 'skip'
       ],
       forceSameVC: true
     });
@@ -32,9 +34,25 @@ module.exports = class SkipCommand extends VCMusicCommand {
     const cliVConn = guild.voiceConnection;
     const dispatcher = cliVConn.dispatcher;
     const queue = this.client.globals.queues[guild.id];
+    const amountOpt = opts._[0];
+
+    let amount = 1;
+
+    if (amountOpt) {
+      const possibleNum = parseInt(amountOpt);
+      const isNum = possibleNum !== NaN;
+      if (isNum) {
+        amount =  possibleNum;
+      }
+    }
+
+    let i;
+    for (i = 0; i < amount - 1; i++) {
+      queue.dequeue();
+    }
 
     queue.disableLoopOne();
     dispatcher.end();
-    msg.say("Skipped song.");
+    msg.say("Skipped " + amount + " song(s).");
   }
 }

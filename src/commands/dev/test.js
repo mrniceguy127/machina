@@ -1,7 +1,6 @@
 'use-strict';
 
 const MachinaLib = require('../../../lib');
-const Command = MachinaLib.Command;
 
 module.exports = class TestCommand extends MachinaLib.Command {
   constructor(client) {

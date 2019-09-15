@@ -1,7 +1,6 @@
 'use-strict';
 
 const MachinaLib = require('../../../lib');
-const Command = MachinaLib.Command;
 const fs = require('fs');
 const path = require('path');
 
