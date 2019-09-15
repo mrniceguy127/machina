@@ -23,7 +23,8 @@ module.exports = class SkipCommand extends VCMusicCommand {
   }
 
   getUsage(opts) {
-    let usage = super.getUsage();
+    let usage = super.getUsage() + " ";
+    usage += "[number]";
 
     return usage;
   }
