@@ -2,6 +2,8 @@
 
 const path = require('path');
 const commandGroups = require('./commands/command-groups');
+const Commando = require('discord.js-commando');
+const sqlite = require('sqlite');
 
 // Callback function for init promise.
 async function initPromiseCallback(res, rej) {
@@ -18,6 +20,10 @@ async function initPromiseCallback(res, rej) {
   };
 
   let client = new MachinaClient(clientOpts);
+  client.setProvider(
+      sqlite.open(path.join('./', 'settings.sqlite3')).then(db => new Commando.SQLiteProvider(db))
+  ).catch(console.error);
+
 
   client.registry
   .registerGroups(commandGroups)
