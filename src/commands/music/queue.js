@@ -45,9 +45,9 @@ module.exports = class QueueCommand extends MachinaLib.Command {
     let i;
     for (i = 0; i < queueItems.length; i++) {
       if (i === 0 && startIndex === 0) {
-        disp += "\n~> " + queueItems[i];
+        disp += "\n~> " + queueItems[i].getURL();
       } else {
-        disp += "\n" + (startIndex + i) + ") <" + queueItems[i] + ">";
+        disp += "\n" + (startIndex + i) + ") <" + queueItems[i].getURL() + ">";
       }
     }
 
@@ -62,7 +62,9 @@ module.exports = class QueueCommand extends MachinaLib.Command {
       return msg.say('Nothing playing');
     }
 
-    const pageOpt = opts.page || opts._[0];
+    let pageOpt = opts.page || opts._[0];
+    if (Array.isArray(pageOpt)) pageOpt = pageOpt[0];
+    
     const page = queue.getValidPage(parseInt(pageOpt));
     const startIndex = queue.getPageQueueStartIndex(page);
 

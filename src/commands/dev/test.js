@@ -32,7 +32,8 @@ module.exports = class TestCommand extends MachinaLib.Command {
         process.env.CMD_PREFIX + 'test',
         process.env.CMD_PREFIX + 'test --help',
         process.env.CMD_PREFIX + 'test --foo'
-      ]
+      ],
+      ownerOnly: true
     });
   }
 
