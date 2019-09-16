@@ -187,8 +187,6 @@ module.exports = class PlayCommand extends VCMusicCommand {
     let urlOpt = opts._[0] || opts.url;
     let url = "";
 
-    console.log(urlOpt);
-
     if (Array.isArray(urlOpt)) url = urlOpt[0];
     else url = urlOpt;
 
