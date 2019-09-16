@@ -11,10 +11,7 @@ const streamOptions = {
 };
 const limQSize = 256;
 const maxFileSize =  32 * 1024 * 1024; // 32 MB
-const streamTypes = {
-  YOUTUBE: 'yt',
-  FILE: 'file'
-};
+const streamTypes = require('./constants/stream-types');
 
 module.exports = class PlayCommand extends VCMusicCommand {
   constructor(client) {
@@ -44,9 +41,9 @@ module.exports = class PlayCommand extends VCMusicCommand {
         process.env.CMD_PREFIX + 'play https://www.youtube.com/...',
         process.env.CMD_PREFIX + 'play -u https://www.youtube.com/...',
         process.env.CMD_PREFIX + 'play https://www.youtube.com/playlist... -l',
+        process.env.CMD_PREFIX + 'play --playlist --url https://www.youtube.com/playlist...',
         process.env.CMD_PREFIX + 'play -pu https://www.youtube.com/playlist...',
-        process.env.CMD_PREFIX + 'play -p --url https://www.youtube.com/playlist...',
-        process.env.CMD_PREFIX + 'play -f https://.../....mp3',
+        process.env.CMD_PREFIX + 'play --file https://.../....mp3',
         process.env.CMD_PREFIX + 'play -f --url https://.../....mp3'
       ],
       forceMemberVC: true
@@ -55,7 +52,7 @@ module.exports = class PlayCommand extends VCMusicCommand {
 
   getUsage(opts) {
     let usage = super.getUsage() + " ";
-    usage += "[URL] [-u|--url=string] [-p|--playlist]";
+    usage += "[URL] [-u|--url=string] [-p|--playlist] [-f|--file]";
 
     return usage;
   }
@@ -147,7 +144,7 @@ module.exports = class PlayCommand extends VCMusicCommand {
     });
   }
 
-  // Get stream base don type.
+  // Get stream based on type.
   getStream(type, url) {
     if (type === streamTypes.YOUTUBE) {
       return ytdl(url, ytdlOptions);
@@ -190,7 +187,10 @@ module.exports = class PlayCommand extends VCMusicCommand {
     let urlOpt = opts._[0] || opts.url;
     let url = "";
 
+    console.log(urlOpt);
+
     if (Array.isArray(urlOpt)) url = urlOpt[0];
+    else url = urlOpt;
 
     if (!url && msg.attachments.size) {
       url = msg.attachments.first().url;

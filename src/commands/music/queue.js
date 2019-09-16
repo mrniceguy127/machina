@@ -64,7 +64,7 @@ module.exports = class QueueCommand extends MachinaLib.Command {
 
     let pageOpt = opts.page || opts._[0];
     if (Array.isArray(pageOpt)) pageOpt = pageOpt[0];
-    
+
     const page = queue.getValidPage(parseInt(pageOpt));
     const startIndex = queue.getPageQueueStartIndex(page);
 
