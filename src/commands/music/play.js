@@ -1,3 +1,14 @@
+'use-strict';
+// TODO
+/*
+
+Restructure classes:
+Make Book class (for pages)
+Give MusicQueue getBook method
+Make MusicPlayer class that inherits from MusicQueue (for added media validation and playing)
+
+*/
+
 const VCMusicCommand = require('./classes/vc-music-command');
 const MusicQueue = require('./classes/music-queue');
 const Song = require('./classes/song');

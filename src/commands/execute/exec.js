@@ -71,13 +71,10 @@ module.exports = class TestCommand extends MachinaLib.Command {
         if (opts.proghelp) {
           msg.say(this.getProgHelp(progDetails));
         } else {
-          const progOpts = cmdOpts.slice(1);
-          let newOpts = Object.assign(opts, { _: progOpts });
-
           const Prog = require(path.join('../../../exec/progs/', progName));
           let prog = new Prog();
 
-          prog.exec(msg, progDetails, newOpts)
+          prog.exec(msg, progDetails)
           .then(() => {
             msg.say('Program executed successfully');
           })

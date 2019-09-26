@@ -2,7 +2,7 @@
 
 # Intro
 
-A general purpose Discord bot that uses a C-style command syntax.
+A general purpose Discord bot that uses a POSIX-style command syntax.
 
 # Requirements
 
