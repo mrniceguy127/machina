@@ -9,10 +9,10 @@ module.exports = [
     "execute",
     "Execute"
   ],
-  // [
-  //   "fun",
-  //   "Fun"
-  // ],
+  [
+    "information",
+    "Information"
+  ],
   [
     "music",
     "Music"
