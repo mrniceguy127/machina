@@ -2,7 +2,7 @@
 
 # Intro
 
-A general purpose Discord bot that uses a POSIX-style command syntax.
+A general-purpose Discord bot that uses a POSIX-style command syntax.
 
 # Requirements
 
@@ -43,7 +43,7 @@ npm start
 | play | Play music command. | ->play [URL] [-u\|--url=string] [-p\|--playlist] [-f\|--file] [-s\|--search] |
 | queue | Play music command. | ->q [pageNumber] [-p\|--page=number] |
 | skip | Skip song command. | ->skip [number] |
-| loop | Command to enable, disable, or toggle looping of the current song in the queue. | ->loop [true\|false\|?] |
+| loop | Command to enable, disable, toggle, or check looping of the current song in the queue. | ->loop [true\|false\|?] |
 
 ## Execute
 

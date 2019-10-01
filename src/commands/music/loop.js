@@ -9,7 +9,7 @@ module.exports = class LoopCommand extends VCMusicCommand {
       aliases: [],
       group: 'music',
       memberName: 'loop',
-      description: 'Command to enable, disable, or toggle looping of the current song in the queue.',
+      description: 'Command to enable, disable, toggle, or check looping of the current song in the queue.',
       details: 'Command to enable, disable, toggle, or check looping of the current song in the queue.',
       guildOnly: true,
       opts: {},
