@@ -2,7 +2,7 @@
 
 const MachinaLib = require('../../../lib');
 
-module.exports = class TestCommand extends MachinaLib.Command {
+module.exports = class InfoCommand extends MachinaLib.Command {
   constructor(client) {
     super(client, {
       name: 'info',

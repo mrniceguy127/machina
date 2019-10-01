@@ -1,19 +1,13 @@
 'use-strict';
-// TODO
-/*
-
-Restructure classes:
-Make Book class (for pages)
-Give MusicQueue getBook method
-Make MusicPlayer class that inherits from MusicQueue (for added media validation and playing)
-
-*/
+// TODO Make MusicPlayer class that inherits from MusicQueue (for added media validation and playing)
+// TODO Make YT search scraper.
 
 const VCMusicCommand = require('./classes/vc-music-command');
 const MusicQueue = require('./classes/music-queue');
 const Song = require('./classes/song');
 const ytdl = require('ytdl-core');
 const request = require('request');
+const plScraper = new (require('./classes/yt-playlist-scraper'))();
 
 const ytdlOptions = { filter: 'audioonly' };
 const streamOptions = {
@@ -36,15 +30,18 @@ module.exports = class PlayCommand extends VCMusicCommand {
       guildOnly: true,
       opts: {
         string: ["url"],
-        boolean: ["playlist", "file"],
+        boolean: ["playlist", "file", "search"],
         alias: {
           url: 'u',
-          list: 'p',
-          file: 'f'
+          playlist: 'p',
+          file: 'f',
+          search: 's'
         },
         default: {
           url: '',
-          list: false
+          playlist: false,
+          search: false,
+          file: false
         }
       },
       examples: [
@@ -63,7 +60,7 @@ module.exports = class PlayCommand extends VCMusicCommand {
 
   getUsage(opts) {
     let usage = super.getUsage() + " ";
-    usage += "[URL] [-u|--url=string] [-p|--playlist] [-f|--file]";
+    usage += "[URL] [-u|--url=string] [-p|--playlist] [-f|--file] [-s|--search]";
 
     return usage;
   }
@@ -194,6 +191,28 @@ module.exports = class PlayCommand extends VCMusicCommand {
     }
   }
 
+  async postEnqueue(msg, opts, queue, wasPlaylist) {
+    const vc = msg.member.voiceChannel;
+    const queueLength = queue.getLength();
+
+    if (queueLength === 1) {
+      msg.say("Now playing");
+    } else {
+      if (wasPlaylist) {
+        msg.say("Added songs to queue (" + (queueLength - 1) + "/" + queue.getLimit() + ")");
+      } else {
+        msg.say("Added song to queue (" + (queueLength - 1) + "/" + queue.getLimit() + ")");
+      }
+    }
+
+    vc.join().then(() => {
+      this.playSongs(msg, opts);
+    })
+    .catch((err) => {
+      msg.say("Could not connect to voice channel.");
+    });
+  }
+
   async conditionalExecute(msg, opts) {
     let urlOpt = opts._[0] || opts.url;
     let url = "";
@@ -207,48 +226,53 @@ module.exports = class PlayCommand extends VCMusicCommand {
       return msg.say('No URL given');
     }
 
-    const isPlaylist = opts.playlist; // Is YT playlist?
+    const isPlaylistOpt = opts.playlist; // Is YT playlist?
     const guild = msg.guild;
 
-    if (isPlaylist) {
-      msg.say("Playlist feature not available yet. Stay tuned!");
-    } else {
-      const vc = msg.member.voiceChannel;
-      let queues = this.client.globals.queues;
+    let queues = this.client.globals.queues;
 
-      this.getStreamType(url, opts)
-      .then((type) => {
-        // Create queue if one does not already exist
-        if (!queues[guild.id]) {
-          let newQueue = new MusicQueue(limQSize);
-          queues[guild.id] = newQueue;
-        }
+    this.getStreamType(url, opts)
+    .then((type) => {
+      // Create queue if one does not already exist
+      if (!queues[guild.id]) {
+        let newQueue = new MusicQueue(limQSize);
+        queues[guild.id] = newQueue;
+      }
 
-        // Append song to queue.
-        let queue = queues[guild.id];
-        if (!queue.isFull()) {
-          queue.enqueue(new Song(type, url));
-          const queueLength = queue.getLength();
+      // Append song to queue.
+      let queue = queues[guild.id];
 
-          if (queueLength === 1) {
-            msg.say("Now playing");
-          } else {
-            msg.say("Added song to queue (" + (queueLength - 1) + "/" + queue.getLimit() + ")");
-          }
+      if (!queue.isFull()) {
+        if (type === streamTypes.YOUTUBE && isPlaylistOpt) {
+          plScraper.scrape(url)
+          .then((urls) => {
+            const urlsLen = urls.length;
+            if (urlsLen) {
+              let i;
+              for (i = 0; i < urlsLen; i++) {
+                if (!queue.isFull()) {
+                  queue.enqueue(new Song(type, urls[i]));
+                }
+              }
 
-          vc.join().then(() => {
-            this.playSongs(msg, opts);
+              this.postEnqueue(msg, opts, queue, true);
+            } else {
+              msg.say("Not a YT playlist");
+            }
           })
           .catch((err) => {
-            msg.say("Could not connect to voice channel.");
+            msg.say("Bad URL response.");
           });
         } else {
-          msg.say("Queue full (256)");
+          queue.enqueue(new Song(type, url));
+          this.postEnqueue(msg, opts, queue, false);
         }
-      })
-      .catch((reason) => {
-        msg.say(reason);
-      });
-    }
+      } else {
+        msg.say("Queue full (256)");
+      }
+    })
+    .catch((reason) => {
+      msg.say(reason || "An error occured");
+    });
   }
 }

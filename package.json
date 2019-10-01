@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/mrniceguy127/machina#readme",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "discord.js": "^11.5.1",
     "discord.js-commando": "^0.10.0",
     "dotenv": "^8.1.0",
@@ -30,6 +31,6 @@
     "rimraf": "^3.0.0",
     "sqlite": "^3.0.3",
     "string-argv": "^0.3.1",
-    "ytdl-core": "^0.29.5"
+    "ytdl-core": "^0.29.7"
   }
 }

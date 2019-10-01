@@ -39,15 +39,17 @@ module.exports = class QueueCommand extends MachinaLib.Command {
 
   // queueItems: Queue items to display
   // startIndex: Index of where the display is starting in the queue
-  getQueueDisplay(queueItems, startIndex, queue, page) {
-    let disp = "__Queue (Page " + page + "/" + queue.getMaxPage() + ")__";
+  getQueueDisplay(startIndex, queueBook, page) {
+    const pageItems = queueBook.getPageItems(page);
+
+    let disp = "__Queue (Page " + page + "/" + queueBook.getMaxPage() + ")__";
 
     let i;
-    for (i = 0; i < queueItems.length; i++) {
+    for (i = 0; i < pageItems.length; i++) {
       if (i === 0 && startIndex === 0) {
-        disp += "\n~> " + queueItems[i].getURL();
+        disp += "\n~> " + pageItems[i].getURL();
       } else {
-        disp += "\n" + (startIndex + i) + ") <" + queueItems[i].getURL() + ">";
+        disp += "\n" + (startIndex + i) + ") <" + pageItems[i].getURL() + ">";
       }
     }
 
@@ -62,14 +64,15 @@ module.exports = class QueueCommand extends MachinaLib.Command {
       return msg.say('Nothing playing');
     }
 
+    const queueBook = queue.getBook();
+
     let pageOpt = opts.page || opts._[0];
     if (Array.isArray(pageOpt)) pageOpt = pageOpt[0];
 
-    const page = queue.getValidPage(parseInt(pageOpt));
-    const startIndex = queue.getPageQueueStartIndex(page);
+    const page = queueBook.getValidPage(parseInt(pageOpt));
+    const startIndex = queueBook.getPageQueueStartIndex(page);
 
-    const pageItems = queue.getPageItems(page);
-    const queueDisp = this.getQueueDisplay(pageItems, startIndex, queue, page);
+    const queueDisp = this.getQueueDisplay(startIndex, queueBook, page);
 
     return msg.say(queueDisp);
   }
