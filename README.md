@@ -49,7 +49,7 @@ npm start
 
 | Name | Description | Usage |
 | --- | -------- | -------- |
-| exec | Execute commands that are reliant on the bot host. | ->exec <program> [...opts] |
+| exec | Execute commands that are reliant on the bot host. | ->exec \<program\> [...opts] [--proghelp] |
 
 # Required Environment Variables
 
