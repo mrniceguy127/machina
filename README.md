@@ -21,6 +21,36 @@ npm i
 npm start
 ```
 
+# Default Commands
+
+## Utility
+
+| Name | Description | Usage |
+| --- | -------- | -------- |
+| help | Show a list of commands or get details about a specific command. | ->help [cmd], ->cmd --help |
+| prefix | Show or set the command prefix (per server). | ->prefix [prefix] |
+
+## Information
+
+| Name | Description | Usage |
+| --- | -------- | -------- |
+| info | Get info about the bot. | ->info |
+
+## Music
+
+| Name | Description | Usage |
+| --- | -------- | -------- |
+| play | Play music command. | ->play [URL] [-u\|--url=string] [-p\|--playlist] [-f\|--file] [-s\|--search] |
+| queue | Play music command. | ->q [pageNumber] [-p\|--page=number] |
+| skip | Skip song command. | ->skip [number] |
+| loop | Command to enable, disable, or toggle looping of the current song in the queue. | ->loop [true\|false\|?] |
+
+## Execute
+
+| Name | Description | Usage |
+| --- | -------- | -------- |
+| exec | Execute commands that are reliant on the bot host. | ->exec <program> [...opts] |
+
 # Required Environment Variables
 
 dotenv is supported, so you can put these in a .env file at the root of the project.

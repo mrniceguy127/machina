@@ -39,7 +39,7 @@ module.exports = class TestCommand extends MachinaLib.Command {
 
   getUsage(opts) {
     let usage = super.getUsage() + " ";
-    usage += "PROGRAM [...opts]";
+    usage += "<program> [...opts]";
 
     return usage;
   }

@@ -31,7 +31,7 @@ module.exports = class QueueCommand extends MachinaLib.Command {
 
   getUsage(opts) {
     let usage = super.getUsage() + ' ';
-    usage += '[number] [-p|--page=number]'
+    usage += '[pageNumber] [-p|--page=number]'
 
     return usage;
   }
