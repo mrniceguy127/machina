@@ -14,16 +14,16 @@ module.exports = class SkipCommand extends VCMusicCommand {
       guildOnly: true,
       opts: {},
       examples: [
-        process.env.CMD_PREFIX + 'skip --help',
-        process.env.CMD_PREFIX + 'skip',
-        process.env.CMD_PREFIX + 'skip 3'
+        'skip --help',
+        'skip',
+        'skip 3'
       ],
       forceSameVC: true
     });
   }
 
-  getUsage(opts) {
-    let usage = super.getUsage() + " ";
+  getUsage(cmdPfx) {
+    let usage = super.getUsage(cmdPfx) + " ";
     usage += "[number]";
 
     return usage;

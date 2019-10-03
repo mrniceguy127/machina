@@ -16,7 +16,7 @@ module.exports = class InfoCommand extends MachinaLib.Command {
       guildOnly: false,
       opts: {},
       examples: [
-        process.env.CMD_PREFIX + 'info'
+        'info'
       ],
       ownerOnly: false
     });

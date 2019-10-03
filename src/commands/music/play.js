@@ -48,21 +48,21 @@ module.exports = class PlayCommand extends VCMusicCommand {
         }
       },
       examples: [
-        process.env.CMD_PREFIX + 'play --help',
-        process.env.CMD_PREFIX + 'play https://www.youtube.com/...',
-        process.env.CMD_PREFIX + 'play -u https://www.youtube.com/...',
-        process.env.CMD_PREFIX + 'play https://www.youtube.com/playlist... -l',
-        process.env.CMD_PREFIX + 'play --playlist --url https://www.youtube.com/playlist...',
-        process.env.CMD_PREFIX + 'play -pu https://www.youtube.com/playlist...',
-        process.env.CMD_PREFIX + 'play --file https://.../....mp3',
-        process.env.CMD_PREFIX + 'play -f --url https://.../....mp3'
+        'play --help',
+        'play https://www.youtube.com/...',
+        'play -u https://www.youtube.com/...',
+        'play https://www.youtube.com/playlist... -l',
+        'play --playlist --url https://www.youtube.com/playlist...',
+        'play -pu https://www.youtube.com/playlist...',
+        'play --file https://.../....mp3',
+        'play -f --url https://.../....mp3'
       ],
       forceMemberVC: true
     });
   }
 
-  getUsage(opts) {
-    let usage = super.getUsage() + " ";
+  getUsage(cmdPfx) {
+    let usage = super.getUsage(cmdPfx) + " ";
     usage += "[URL] [-u|--url=string] [-p|--playlist] [-f|--file] [-s|--search]";
 
     return usage;

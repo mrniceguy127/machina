@@ -14,17 +14,17 @@ module.exports = class LoopCommand extends VCMusicCommand {
       guildOnly: true,
       opts: {},
       examples: [
-        process.env.CMD_PREFIX + 'loop',
-        process.env.CMD_PREFIX + 'loop true',
-        process.env.CMD_PREFIX + 'loop false',
-        process.env.CMD_PREFIX + 'loop ?'
+        'loop',
+        'loop true',
+        'loop false',
+        'loop ?'
       ],
       forceSameVC: true
     });
   }
 
-  getUsage(opts) {
-    let usage = super.getUsage() + " ";
+  getUsage(cmdPfx) {
+    let usage = super.getUsage(cmdPfx) + " ";
     usage += "[true|false|?]";
 
     return usage;

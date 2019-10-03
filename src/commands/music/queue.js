@@ -21,16 +21,16 @@ module.exports = class QueueCommand extends MachinaLib.Command {
         }
       },
       examples: [
-        process.env.CMD_PREFIX + 'q',
-        process.env.CMD_PREFIX + 'q -p 2',
-        process.env.CMD_PREFIX + 'q 2',
-        process.env.CMD_PREFIX + 'q --page 3',
+        'q',
+        'q -p 2',
+        'q 2',
+        'q --page 3',
       ]
     });
   }
 
-  getUsage(opts) {
-    let usage = super.getUsage() + ' ';
+  getUsage(cmdPfx) {
+    let usage = super.getUsage(cmdPfx) + ' ';
     usage += '[pageNumber] [-p|--page=number]'
 
     return usage;

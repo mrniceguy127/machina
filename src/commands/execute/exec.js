@@ -28,7 +28,7 @@ module.exports = class TestCommand extends MachinaLib.Command {
         }
       },
       examples: [
-        process.env.CMD_PREFIX + 'exec someprogram --someoption optionarg'
+        'exec someprogram --someoption optionarg'
       ],
       throttling: {
         usages: 1,
@@ -37,8 +37,8 @@ module.exports = class TestCommand extends MachinaLib.Command {
     });
   }
 
-  getUsage(opts) {
-    let usage = super.getUsage() + " ";
+  getUsage(cmdPfx) {
+    let usage = super.getUsage(cmdPfx) + " ";
     usage += "<program> [...opts] [--proghelp]";
 
     return usage;

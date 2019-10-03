@@ -24,10 +24,14 @@ async function initPromiseCallback(res, rej) {
       sqlite.open(path.join('./', 'settings.sqlite3')).then(db => new Commando.SQLiteProvider(db))
   ).catch(console.error);
 
+  let registry = client.registry;
 
-  client.registry
+  registry
   .registerGroups(commandGroups)
   .registerDefaults()
+  .unregisterCommand(registry.commands.get('help'));
+
+  registry
   .registerCommandsIn(path.join(__dirname, 'commands'));
 
   client.login(process.env.DISCORD_TOKEN)

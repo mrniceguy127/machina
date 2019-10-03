@@ -29,16 +29,16 @@ module.exports = class TestCommand extends MachinaLib.Command {
         }
       },
       examples: [
-        process.env.CMD_PREFIX + 'test',
-        process.env.CMD_PREFIX + 'test --help',
-        process.env.CMD_PREFIX + 'test --foo'
+        'test',
+        'test --help',
+        'test --foo'
       ],
       ownerOnly: true
     });
   }
 
-  getUsage(opts) {
-    let usage = super.getUsage() + " ";
+  getUsage(cmdPfx) {
+    let usage = super.getUsage(cmdPfx) + " ";
     usage += "[-f|--foo=string] [-b|--bar] [-g|--hoge]";
 
     return usage;
