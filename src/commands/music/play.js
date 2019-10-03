@@ -1,13 +1,16 @@
 'use-strict';
 // TODO Make MusicPlayer class that inherits from MusicQueue (for added media validation and playing)
-// TODO Make YT search scraper.
 
 const VCMusicCommand = require('./classes/vc-music-command');
 const MusicQueue = require('./classes/music-queue');
 const Song = require('./classes/song');
 const ytdl = require('ytdl-core');
 const request = require('request');
-const plScraper = new (require('./classes/yt-playlist-scraper'))();
+const YTPlaylistScraper = require('./classes/yt-playlist-scraper');
+const YTSearchScraper = require('./classes/yt-search-scraper');
+
+const plScraper = new YTPlaylistScraper();
+const searchScraper = new YTSearchScraper()
 
 const ytdlOptions = { filter: 'audioonly' };
 const streamOptions = {
@@ -213,9 +216,38 @@ module.exports = class PlayCommand extends VCMusicCommand {
     });
   }
 
+  getYTURLFromQuery(query) {
+    const baseURL = 'https://www.youtube.com/';
+    let urlParams = 'results?search_query=' + encodeURIComponent(query);
+    let url = baseURL + urlParams;
+    return url;
+  }
+
+
+  getGuildQueue(guild) {
+    let queues = this.client.globals.queues;
+    return queues[guild.id];
+  }
+
+  createGuildQueue(guild) {
+    this.client.globals.queues[guild.id] = new MusicQueue(limQSize);
+  }
+
+  createQueueIfNotExist(guild) {
+    // Create queue if one does not already exist
+
+    let queue = this.getGuildQueue(guild);
+
+    if (!queue) {
+      this.createGuildQueue(guild);
+    }
+  }
+
   async conditionalExecute(msg, opts) {
     let urlOpt = opts._[0] || opts.url;
     let url = "";
+
+    const searchOpt = opts.search;
 
     if (Array.isArray(urlOpt)) url = urlOpt[0];
     else url = urlOpt;
@@ -229,18 +261,26 @@ module.exports = class PlayCommand extends VCMusicCommand {
     const isPlaylistOpt = opts.playlist; // Is YT playlist?
     const guild = msg.guild;
 
-    let queues = this.client.globals.queues;
+    if (searchOpt) {
+      let searchURL = this.getYTURLFromQuery(opts._.join(' '));
+      return searchScraper.scrape(searchURL)
+      .then((foundURL) => {
+        if (foundURL) {
+          this.createQueueIfNotExist(guild);
+          let queue = this.getGuildQueue(guild);
+
+          queue.enqueue(new Song(streamTypes.YOUTUBE, foundURL));
+          this.postEnqueue(msg, opts, queue, false);
+        } else {
+          msg.say("No videos found");
+        }
+      });
+    }
 
     this.getStreamType(url, opts)
     .then((type) => {
-      // Create queue if one does not already exist
-      if (!queues[guild.id]) {
-        let newQueue = new MusicQueue(limQSize);
-        queues[guild.id] = newQueue;
-      }
-
-      // Append song to queue.
-      let queue = queues[guild.id];
+      this.createQueueIfNotExist(guild);
+      let queue = this.getGuildQueue(guild);
 
       if (!queue.isFull()) {
         if (type === streamTypes.YOUTUBE && isPlaylistOpt) {
