@@ -27,7 +27,7 @@ npm start
 
 | Name | Description | Usage |
 | --- | -------- | -------- |
-| help | Show a list of commands or get details about a specific command. | ->help [cmd/groupID] [pageNumber] [-p|--page=number], ->cmd --help |
+| help | Show a list of commands or get details about a specific command. | ->help [cmd/groupID] [pageNumber] [-p\|--page=number], ->cmd --help |
 | prefix | Show or set the command prefix (per server). | ->prefix [prefix] |
 
 ## Information
