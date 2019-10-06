@@ -80,9 +80,9 @@ module.exports = class OsuCommand extends MachinaLib.Command {
     const username = firstUser.username;
     const playCount = firstUser.playcount;
     const totalScore = firstUser.total_score;
-    const globalRank = firstUser.pp_rank;
-    const pp = firstUser.pp_raw; // 0 for inactive players
-    const acc = firstUser.accuracy;
+    const globalRank = Math.round(firstUser.pp_rank * 100) / 100;
+    const pp = Math.round(firstUser.pp_raw * 100) / 100;; // 0 for inactive players
+    const acc = Math.round(parseFloat(firstUser.accuracy) * 100) / 100;
     const country = firstUser.country;
     const countryRank = firstUser.pp_country_rank;
 
@@ -93,7 +93,7 @@ module.exports = class OsuCommand extends MachinaLib.Command {
       'Play Count: ' + this.getCommaNum(playCount) + '\n' +
       'Total Score: ' + this.getCommaNum(totalScore) + '\n' +
       'PP: ' + this.getCommaNum(pp) + '\n' +
-      'Accuracy: ' + acc.substring(0, 5) + '%\n' +
+      'Accuracy: ' + acc + '%\n' +
       'Global Rank: #' + this.getCommaNum(globalRank) + '\n' +
       'Country Rank (' + country + '): #' + this.getCommaNum(countryRank);
 
