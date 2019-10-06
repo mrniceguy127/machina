@@ -16,11 +16,11 @@ module.exports = [
   [
     "music",
     "Music"
+  ],
+  [
+    "fluff",
+    "Fluff"
   ]
-  // [
-  //   "anime",
-  //   "Anime"
-  // ],
   // [
   //   "moderation",
   //   "Moderation"

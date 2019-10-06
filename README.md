@@ -51,12 +51,18 @@ npm start
 | --- | -------- | -------- |
 | exec | Execute commands that are reliant on the bot host. | ->exec \<program\> [...opts] [--proghelp] |
 
-# Required Environment Variables
+# Environment Variables
 
 dotenv is supported, so you can put these in a .env file at the root of the project.
+
+## Required Environment Variables
 
 `CMD_PREFIX` - The bot command prefix.
 
 `DISCORD_TOKEN` - The bot token.
 
 `OWNER` - The ID of the bot owner.
+
+## Optional Environment Variables
+
+`OSU_API_KEY` - API key for osu!. Used for osu! integration.

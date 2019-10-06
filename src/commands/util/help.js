@@ -5,7 +5,7 @@ const ArrayBook = MachinaLib.util.ArrayBook;
 
 const maxCmdBookPageSize = 5;
 
-module.exports = class TestCommand extends MachinaLib.Command {
+module.exports = class HelpCommand extends MachinaLib.Command {
   constructor(client) {
     super(client, {
       name: 'help',
