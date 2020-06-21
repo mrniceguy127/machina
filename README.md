@@ -10,7 +10,7 @@ These are required for the bot to be able to play audio in voice channels.
 https://discord.js.org/#/docs/main/stable/general/faq
 
 - ffmpeg
-- Fulfilled requirements for node-opus.
+- Fulfilled requirements for @discordjs/opus.
 
 # Installation + Running
 

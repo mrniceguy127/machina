@@ -21,16 +21,18 @@
   },
   "homepage": "https://github.com/mrniceguy127/machina#readme",
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
     "cheerio": "^1.0.0-rc.3",
-    "discord.js": "^11.5.1",
+    "discord.js": "^11.6.4",
     "discord.js-commando": "^0.10.0",
-    "dotenv": "^8.1.0",
+    "dotenv": "^8.2.0",
+    "ffmpeg-static": "^4.2.4",
     "getopts": "^2.2.5",
-    "node-opus": "^0.3.2",
-    "request": "^2.88.0",
-    "rimraf": "^3.0.0",
-    "sqlite": "^3.0.3",
+    "m3u8stream": "^0.6.5",
+    "request": "^2.88.2",
+    "rimraf": "^3.0.2",
+    "sqlite": "^3.0.6",
     "string-argv": "^0.3.1",
-    "ytdl-core": "^0.29.7"
+    "ytdl-core": "^2.1.7"
   }
 }

@@ -78,7 +78,7 @@ module.exports = class TestCommand extends MachinaLib.Command {
           .then(() => {
             msg.say('Program executed successfully');
           })
-          .catch(() => {
+          .catch((err) => {
             this.clearThrottle(user.id);
             msg.say('Execution failed. Check your command input. As a last resort, contact the bot host.');
           });

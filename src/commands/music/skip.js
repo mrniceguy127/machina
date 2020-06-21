@@ -54,7 +54,11 @@ module.exports = class SkipCommand extends VCMusicCommand {
     }
 
     queue.disableLoopOne();
-    dispatcher.end();
+    if (dispatcher) {
+        dispatcher.end();
+    } else if (queue.getLength() === 0) {
+        cliVConn.disconnect()
+    }
     msg.say("Skipped " + amount + " song(s).");
   }
 }

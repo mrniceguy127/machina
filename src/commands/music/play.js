@@ -212,6 +212,7 @@ module.exports = class PlayCommand extends VCMusicCommand {
       this.playSongs(msg, opts);
     })
     .catch((err) => {
+      console.error(err.stack)
       msg.say("Could not connect to voice channel.");
     });
   }
